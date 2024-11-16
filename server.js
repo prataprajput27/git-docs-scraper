@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3000;
 const GITHUB_API_URL = "https://api.github.com";
 
-// function to retry API requests in case of network errors or rate limits
+// Function to retry API requests in case of network errors or rate limits
 async function retryRequest(fn, retries = 3, delay = 1000) {
   for (let i = 0; i < retries; i++) {
     try {
@@ -26,7 +26,7 @@ async function retryRequest(fn, retries = 3, delay = 1000) {
   }
 }
 
-// function to fetch the content of a file using the GitHub API
+// Function to fetch the content of a file using the GitHub API
 async function fetchFileContent(owner, repo, filePath) {
   return await retryRequest(async () => {
     const url = `${GITHUB_API_URL}/repos/${owner}/${repo}/contents/${filePath}`;
@@ -39,7 +39,7 @@ async function fetchFileContent(owner, repo, filePath) {
   });
 }
 
-// function to recursively search for .md files in the repository
+// Function to recursively search for .md files in the repository
 async function findMdFiles(owner, repo, dirPath = "") {
   return await retryRequest(async () => {
     const url = `${GITHUB_API_URL}/repos/${owner}/${repo}/contents/${dirPath}`;
@@ -140,6 +140,41 @@ app.get("/downloadCombined", async (req, res) => {
       console.log(`Markdown content saved to ${outputFile}`);
       return res.download(outputFile);
     }
+  } catch (error) {
+    console.error("Error:", error.message);
+    return res
+      .status(500)
+      .send("An error occurred while processing your request.");
+  }
+});
+
+// API to preview a specific markdown file
+app.get("/preview", async (req, res) => {
+  const { owner, repo, filePath } = req.query;
+
+  if (!owner || !repo || !filePath) {
+    return res
+      .status(400)
+      .send("Missing required parameters: owner, repo, filePath.");
+  }
+
+  try {
+    console.log(`Fetching preview of ${filePath} from ${owner}/${repo}...`);
+    // Fetch the content of the markdown file
+    const content = await fetchFileContent(owner, repo, filePath);
+
+    if (!content) {
+      return res.status(404).send("File not found or empty content.");
+    }
+
+    // Optionally convert markdown to HTML for better preview
+    const htmlContent = marked(content);
+
+    // Return the rendered HTML preview
+    return res.send(`
+      <h2>Preview of ${filePath}</h2>
+      <div>${htmlContent}</div>
+    `);
   } catch (error) {
     console.error("Error:", error.message);
     return res
