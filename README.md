@@ -12,10 +12,6 @@
 - Saves the combined content to a designated folder.
 - Provides easy-to-use API endpoints for listing and downloading `.md` files, or previewing them.
 
-## Installation
-
-Follow these steps to set up the project locally:
-
 ### Prerequisites
 
 - Node.js (version 12 or above)
