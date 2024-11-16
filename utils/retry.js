@@ -1,4 +1,4 @@
-// Retry logic for API requests
+// retry logic for API requests
 async function retryRequest(fn, retries = 3, delay = 1000) {
   for (let i = 0; i < retries; i++) {
     try {

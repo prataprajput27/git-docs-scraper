@@ -2,7 +2,7 @@ const axios = require("axios");
 const { GITHUB_API_URL } = require("../config/config");
 const retryRequest = require("../utils/retry");
 
-// Function to fetch the content of a file using the GitHub API
+// function to fetch the content of a file using the GitHub API
 async function fetchFileContent(owner, repo, filePath) {
   return await retryRequest(async () => {
     const url = `${GITHUB_API_URL}/repos/${owner}/${repo}/contents/${filePath}`;
@@ -15,7 +15,7 @@ async function fetchFileContent(owner, repo, filePath) {
   });
 }
 
-// Function to recursively search for .md files in the repository
+// function to recursively search for .md files in the repository
 async function findMdFiles(owner, repo, dirPath = "") {
   return await retryRequest(async () => {
     const url = `${GITHUB_API_URL}/repos/${owner}/${repo}/contents/${dirPath}`;
