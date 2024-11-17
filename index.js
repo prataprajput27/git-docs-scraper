@@ -1,13 +1,18 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const fileRoutes = require("./routes/fileRoutes");
 
 const app = express();
 const PORT = 3000;
 
+// cors middleware
+app.use(cors());
+
+// middleware for parsing JSON
 app.use(express.json());
 
-// wse the file-related routes
+// use routes
 app.use("/api/files", fileRoutes);
 
 app.listen(PORT, () => {
