@@ -5,7 +5,10 @@ import RepoLister from "./RepoLister";
 
 const FormComponent = () => {
   const [repoData, setRepoData] = useState(null); // State to hold fetched data
-  const [formValues, setFormValues] = useState({ ownerUsername: "", repoName: "" }); // State to store form values
+  const [formValues, setFormValues] = useState({
+    ownerUsername: "",
+    repoName: "",
+  }); // State to store form values
   const [isLoading, setIsLoading] = useState(false); // Loading state for fetch
 
   const fetchRepoData = async (ownerUsername, repoName) => {
@@ -58,6 +61,7 @@ const FormComponent = () => {
                 <Field
                   name="ownerUsername"
                   type="text"
+                  placeholder="Enter the owner's username"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 <div className="min-h-[24px]">
@@ -79,6 +83,7 @@ const FormComponent = () => {
                 <Field
                   name="repoName"
                   type="text"
+                  placeholder="Enter the repository name"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 />
                 <div className="min-h-[24px]">
